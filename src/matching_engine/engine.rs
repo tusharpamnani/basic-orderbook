@@ -1,5 +1,6 @@
 use super::orderbook::{Orderbook, Order};
 use std::collections::HashMap; // this is a hashmap, it's a key-value store, it's like a dictionary in python, it's like a json objec
+use rust_decimal::prelude::*;
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone)]
 pub struct TradingPair {
@@ -36,10 +37,10 @@ impl MatchingEngine{
         println!("opening a new orderbook for market {:?}", pair.to_string());
     }
 
-    pub fn place_limit_order(&mut self, pair: TradingPair, price: f64, order: Order) -> Result<(), String> {
+    pub fn place_limit_order(&mut self, pair: TradingPair, price: Decimal, order: Order) -> Result<(), String> {
         match self.orderbooks.get_mut(&pair) {
             Some(orderbook) => {
-                orderbook.add_orderd(price, order);
+                orderbook.add_limit_order(price, order);
 
                 println!("Placing limit order for {:?} at price {:?}", pair.to_string(), price);
 
